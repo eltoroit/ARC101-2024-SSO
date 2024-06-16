@@ -1,7 +1,4 @@
-"use strict";
-
 import "dotenv/config";
-
 import UTIL from "./Util.js";
 import OAUTH_JWT from "./OAuth_JWT.js";
 import WEB_SERVER from "./WebServer.js";
