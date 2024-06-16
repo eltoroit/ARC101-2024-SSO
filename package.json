@@ -1,5 +1,19 @@
 {
 	"type": "module",
+	"scripts": {
+		"compileLWC": "./build.sh",
+		"watchLWC": "nodemon --watch src/client --ext js,html,css --exec './build.sh'",
+		"serve": "node ./src/server/_WEB.js",
+		"rebuildClient": "./fullRebuild.sh"
+	},
+	"dependencies": {
+		"@salesforce-ux/design-system": "^2.24.3",
+		"cors": "2.8.5",
+		"dotenv": "16.4.5",
+		"ejs": "3.1.10",
+		"express": "4.19.2",
+		"follow-redirects": "1.15.6"
+	},
 	"devDependencies": {
 		"@lwc/rollup-plugin": "^6.7.2",
 		"@rollup/plugin-replace": "^5.0.7",
