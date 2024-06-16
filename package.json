@@ -3,7 +3,7 @@
 	"scripts": {
 		"compileLWC": "./build.sh",
 		"serve": "node ./src/server/index.js",
-		"watchLWC": "nodemon --watch src/client --ext js,html,css --exec './build.sh'",
+		"watchLWC": "nodemon --watch src/clientLWC --ext js,html,css --exec './build.sh'",
 		"rebuildClient": "./fullRebuild.sh"
 	},
 	"dependencies": {
