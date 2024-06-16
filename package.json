@@ -2,8 +2,8 @@
 	"type": "module",
 	"scripts": {
 		"compileLWC": "./build.sh",
+		"serve": "node ./src/server/index.js",
 		"watchLWC": "nodemon --watch src/client --ext js,html,css --exec './build.sh'",
-		"serve": "node ./src/server/_WEB.js",
 		"rebuildClient": "./fullRebuild.sh"
 	},
 	"dependencies": {

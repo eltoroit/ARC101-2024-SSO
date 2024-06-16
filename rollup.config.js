@@ -2,11 +2,13 @@ import lwc from "@lwc/rollup-plugin";
 import replace from "@rollup/plugin-replace";
 
 export default {
-	input: "src/client/main.js",
+	input: "src/clientLWC/main.js",
 
 	output: {
-		file: "dist/main.js",
-		format: "esm",
+		dir: "dist",
+		preserveModules: true,
+		preserveModulesRoot: "src",
+		format: "es",
 	},
 
 	plugins: [
