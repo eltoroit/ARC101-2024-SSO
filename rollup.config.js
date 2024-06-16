@@ -8,6 +8,7 @@ const config = {
 
 	plugins: [
 		replace({
+			preventAssignment: true,
 			"process.env.NODE_ENV": JSON.stringify("development"),
 		}),
 		lwc(),
@@ -28,7 +29,7 @@ if (debugMode) {
 	console.log("PRODUCTION Mode (Single files for LWC)");
 	// Good for production
 	config.output = {
-		file: "dist/clientLWC/main.js",
+		dir: "dist/clientLWC",
 		format: "es",
 	};
 }
