@@ -35,6 +35,7 @@ export default class OAuthDemo {
 					process.env.OAUTH_LOGIN_URL = userData.instanceUrl;
 					process.env.OAUTH_CONSUMER_KEY = userData.consumerKey;
 					process.env.OAUTH_CONSUMER_SECRET = userData.consumerSecret;
+					console.log(`Settings read from ${process.env.USER_JSON}`);
 				})
 				.catch((err) => {
 					console.error(`Error: ${err.message}`);
