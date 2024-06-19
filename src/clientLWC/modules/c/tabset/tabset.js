@@ -1,37 +1,37 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from "lwc";
 
 const CLASSES = {
 	standard: {
-		div: 'slds-tabs_default',
-		ul: 'slds-tabs_default__nav',
-		li: 'slds-tabs_default__item',
-		span: 'slds-tabs_default__link',
-		body: 'slds-p-horizontal_medium',
-		tab: 'slds-tabs_default__content'
+		div: "slds-tabs_default",
+		ul: "slds-tabs_default__nav",
+		li: "slds-tabs_default__item",
+		span: "slds-tabs_default__link",
+		body: "slds-p-horizontal_medium",
+		tab: "slds-tabs_default__content",
 	},
 	scoped: {
-		div: 'slds-tabs_scoped',
-		ul: 'slds-tabs_scoped__nav',
-		li: 'slds-tabs_scoped__item',
-		span: 'slds-tabs_scoped__link',
-		body: 'fullArea',
-		tab: 'slds-tabs_scoped__content'
+		div: "slds-tabs_scoped",
+		ul: "slds-tabs_scoped__nav",
+		li: "slds-tabs_scoped__item",
+		span: "slds-tabs_scoped__link",
+		body: "fullArea",
+		tab: "slds-tabs_scoped__content",
 	},
 	vertical: {
-		div: 'slds-vertical-tabs',
-		ul: 'slds-vertical-tabs__nav',
-		li: 'slds-vertical-tabs__nav-item',
-		span: 'slds-vertical-tabs__link',
-		body: 'slds-p-horizontal_medium fullArea',
-		tab: 'slds-vertical-tabs__content'
-	}
+		div: "slds-vertical-tabs",
+		ul: "slds-vertical-tabs__nav",
+		li: "slds-vertical-tabs__nav-item",
+		span: "slds-vertical-tabs__link",
+		body: "slds-p-horizontal_medium fullArea",
+		tab: "slds-vertical-tabs__content",
+	},
 };
 
 export default class Tabset extends LightningElement {
 	tabs = [];
 	classes = {};
-	_variant = 'standard'; // standard, scoped, and vertical
-	@api defaultTab = 'NONE';
+	_variant = "standard"; // standard, scoped, and vertical
+	@api defaultTab = "NONE";
 
 	@api
 	get variant() {
@@ -48,7 +48,16 @@ export default class Tabset extends LightningElement {
 			let tabs = slot.assignedNodes();
 			this.tabs = tabs.map((tab, idx) => ({ idx: idx, label: tab.label }));
 			Promise.resolve().then(() => {
-				let idx = this.tabs.findIndex((tab) => tab.label === this.defaultTab);
+				let page = this.defaultTab;
+
+				// Find tab from URL
+				let url = window.location;
+				let params = new URLSearchParams(url.search);
+				if (params.has("page")) {
+					page = params.get("page");
+				}
+
+				let idx = this.tabs.findIndex((tab) => tab.label === page);
 				idx = idx < 0 ? 0 : idx;
 				this.showTab(idx);
 			});
@@ -56,7 +65,7 @@ export default class Tabset extends LightningElement {
 	}
 
 	onSwitchTab(event) {
-		let tabIdx = event.currentTarget.getAttribute('data-idx');
+		let tabIdx = event.currentTarget.getAttribute("data-idx");
 		this.showTab(Number(tabIdx));
 	}
 
@@ -67,23 +76,23 @@ export default class Tabset extends LightningElement {
 		this.setVariant();
 
 		// Tabs
-		tabs = Array.from(this.template.querySelectorAll('li[data-idx]'));
+		tabs = Array.from(this.template.querySelectorAll("li[data-idx]"));
 		tabs.forEach((tab) => {
-			if (Number(tab.attributes['data-idx'].value) === tabIdx) {
-				tab.classList.add('slds-is-active');
+			if (Number(tab.attributes["data-idx"].value) === tabIdx) {
+				tab.classList.add("slds-is-active");
 				if (this.variant === "scoped") {
 					window.history.replaceState({}, "", `/?page=${tab.children[0].innerHTML}`); // eslint-disable-line
-				}		
+				}
 				this.dispatchEvent(
-					new CustomEvent('switch', {
+					new CustomEvent("switch", {
 						detail: {
 							index: tab.dataset.idx,
-							label: tab.dataset.label
-						}
+							label: tab.dataset.label,
+						},
 					})
 				);
 			} else {
-				tab.classList.remove('slds-is-active');
+				tab.classList.remove("slds-is-active");
 			}
 		});
 

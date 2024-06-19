@@ -45,17 +45,17 @@ export default class Home extends LightningElement {
 			if (params.has("page")) {
 				page = params.get("page");
 			}
-		} else {
-			let tabs = Array.from(this.template.querySelectorAll("c-tab"));
-			tabs.forEach((tab, index) => {
-				if (tab.label === page) {
-					pageFound = index;
-				}
-			});
-			if (pageFound >= 0) {
-				let tabset = this.template.querySelector("c-tabset");
-				tabset.showTab(pageFound);
+		}
+
+		let tabs = Array.from(this.template.querySelectorAll("c-tab"));
+		tabs.forEach((tab, index) => {
+			if (tab.label === page) {
+				pageFound = index;
 			}
+		});
+		if (pageFound >= 0) {
+			let tabset = this.template.querySelector("c-tabset");
+			tabset.showTab(pageFound);
 		}
 	}
 
