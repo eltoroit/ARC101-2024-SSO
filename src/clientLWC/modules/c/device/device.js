@@ -109,4 +109,16 @@ export default class JWT extends LightningElement {
 			});
 		}, 0);
 	}
+
+	onCodeClick() {
+		let value = this.prompt.code;
+		navigator.clipboard
+			.writeText(value)
+			.then(() => {
+				alert(`Copied: ${value}`);
+			})
+			.catch((err) => {
+				alert("Error copying to the clipboard");
+			});
+	}
 }
