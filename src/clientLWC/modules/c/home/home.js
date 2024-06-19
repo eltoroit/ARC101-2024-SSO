@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement } from "lwc";
 
 export default class Home extends LightningElement {
 	settings = {};
@@ -6,15 +6,15 @@ export default class Home extends LightningElement {
 
 	connectedCallback() {
 		fetch("/settings")
-			.then(response => response.json())
-			.then(data => {
+			.then((response) => response.json())
+			.then((data) => {
 				this._switchTab();
 				this.settings = data;
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(err);
 				alert(`Error retriving settings: ${JSON.stringify(err)}`);
-			})
+			});
 	}
 
 	onSettingsChanged(event) {
@@ -38,8 +38,14 @@ export default class Home extends LightningElement {
 	}
 
 	_switchTab(page) {
-		if (page) {
-			let pageFound = -1;
+		let pageFound = -1;
+		if (!page) {
+			let url = window.location;
+			let params = new URLSearchParams(url.search);
+			if (params.has("page")) {
+				page = params.get("page");
+			}
+		} else {
 			let tabs = Array.from(this.template.querySelectorAll("c-tab"));
 			tabs.forEach((tab, index) => {
 				if (tab.label === page) {
@@ -50,12 +56,6 @@ export default class Home extends LightningElement {
 				let tabset = this.template.querySelector("c-tabset");
 				tabset.showTab(pageFound);
 			}
-		} else {
-			let url = window.location;
-			let params = new URLSearchParams(url.search);
-			if (params.has("page")) {
-				page = params.get("page");
-			}
 		}
 	}
 
@@ -64,11 +64,11 @@ export default class Home extends LightningElement {
 		let output = null;
 		if (data) {
 			output = "{\n";
-			let keys = Object.keys(data).sort((a,b)=> a < b ? -1 : 1);
-			keys.forEach(key => {
+			let keys = Object.keys(data).sort((a, b) => (a < b ? -1 : 1));
+			keys.forEach((key) => {
 				output += `  "${key}":${JSON.stringify(data[key])},\n`;
-			})
-			output += "}"
+			});
+			output += "}";
 		}
 		return output;
 	}
