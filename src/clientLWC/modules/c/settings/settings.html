@@ -3,7 +3,14 @@
         <div class="slds-form">
             <template for:each={list} for:item="input">
                 <div key={input.key}>
-                    <lightning-input label={input.label} data-key={input.key} value={input.value} disabled={disabled} onchange={onValueChange} onclick={onClick} style="width: 800px"></lightning-input>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="form-element-01">{input.label}</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" data-key={input.key} value={input.value} disabled={disabled}
+                                readonly={readonly} onchange={onValueChange} onclick={onClick}
+                                style="width: 800px"></input>
+                        </div>
+                    </div>
                 </div>
             </template>
             <br />

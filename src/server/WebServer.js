@@ -26,7 +26,7 @@ export default class WebServer {
 		this.app = express();
 		this.app.set("view engine", "ejs");
 		this.app.set("views", path.resolve("src/views"));
-		// this.lwcFolder = path.resolve(this.lwcFolder);
+		this.lwcFolder = path.resolve(this.lwcFolder);
 
 		this.makeServer();
 		this.app.use(express.json());
