@@ -79,9 +79,10 @@ export default class WebServer {
 	}
 
 	async oauthJWT(req, res) {
+		debugger;
 		let privateKey = null;
 		if (this.config.isLocalhost) {
-			privateKey = fs.readFileSync(path.resolve("../Cert", "private.key")).toString("utf8");
+			privateKey = fs.readFileSync(path.resolve("./cert", "private.key")).toString("utf8");
 		} else {
 			privateKey = process.env.JWT_PRIVATE_JEY;
 		}
