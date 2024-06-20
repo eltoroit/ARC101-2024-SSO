@@ -44,19 +44,20 @@
                         <c-tab label=" Web Server">
                             <div class="slds-align_absolute-center pageSize"
                                 style="background-color: white; height: 100%">
-                                <c-web-server settings={settings} onresults={onResults}></c-web-server>
+                                <c-web-server settings={settings} onresults={onResults} class="fullPage"></c-web-server>
                             </div>
                         </c-tab>
                         <c-tab label="Username Password">
                             <div class="slds-align_absolute-center pageSize"
                                 style="background-color: white; height: 100%">
-                                <c-username-password settings={settings} onresults={onResults}> </c-username-password>
+                                <c-username-password settings={settings} onresults={onResults} class="fullPage">
+                                </c-username-password>
                             </div>
                         </c-tab>
                         <c-tab label="User Agent">
                             <div class="slds-align_absolute-center pageSize"
                                 style="background-color: white; height: 100%">
-                                <c-user-agent settings={settings} onresults={onResults}></c-user-agent>
+                                <c-user-agent settings={settings} onresults={onResults} class="fullPage"></c-user-agent>
                             </div>
                         </c-tab>
                         <c-tab label="JWT Bearer">
@@ -73,7 +74,7 @@
                         </c-tab>
                         <c-tab label="Results">
                             <div class="pageSize">
-                                <c-results settings={settings} oauth-data={OAuthData}></c-results>
+                                <c-results settings={settings} oauth-data={OAuthData} class="fullPage"></c-results>
                             </div>
                         </c-tab>
                         <c-tab label="Resources">

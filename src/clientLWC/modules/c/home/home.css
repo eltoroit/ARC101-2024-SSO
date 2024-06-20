@@ -7,3 +7,7 @@
 .resource:hover {
 	background-color: #b0c4de;
 }
+
+.fullPage {
+	width: 100%;
+}
