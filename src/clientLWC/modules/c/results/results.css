@@ -4,12 +4,17 @@ th {
 }
 
 td.data {
-    white-space: nowrap; padding: 5px
+    white-space: nowrap;
+    padding: 5px
 }
 
 th.data {
     font-weight: bold;
     text-align: center;
+}
+
+pre {
+    text-align: left;
 }
 
 .data.Id {

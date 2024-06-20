@@ -1,6 +1,8 @@
 <template>
     <template if:true={oauthData.strData}>
-        <lightning-button label="Logout" variant="destructive" onclick={onLogoutClick}></lightning-button>
+        <div style="text-align: left;">
+            <lightning-button label="Logout" variant="destructive" onclick={onLogoutClick}></lightning-button>
+        </div>
         <br />
     </template>
     <c-tabset variant="vertical" default-tab="OAuth Response">
@@ -44,11 +46,13 @@
         </template>
         <template if:true={oauthData.loginUrl}>
             <c-tab label="Browser Login">
-                <ul>
-                    <li>Username/password flow is not allowed</li>
-                    <li>Must have <b>Web</b> or <b>Full</b> scopes<br /></li>
-                </ul>
-                Login Url: <a href={oauthData.loginUrl} target="_blank">{oauthData.loginUrl}</a>
+                <div style="text-align: left;">
+                    <ul>
+                        <li>Username/password flow is not allowed</li>
+                        <li>Must have <b>Web</b> or <b>Full</b> scopes<br /></li>
+                    </ul>
+                    Login Url: <a href={oauthData.loginUrl} target="_blank">{oauthData.loginUrl}</a>
+                </div>
             </c-tab>
         </template>
         <template if:true={oauthData.strRefreshToken}>

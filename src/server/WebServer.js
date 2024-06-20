@@ -26,14 +26,14 @@ export default class WebServer {
 		this.app = express();
 		this.app.set("view engine", "ejs");
 		this.app.set("views", path.resolve("src/views"));
-		this.lwcFolder = path.resolve(this.lwcFolder);
 
 		this.makeServer();
 		this.app.use(express.json());
 		this.app.use(cors(this._CORS()));
 		this.createRoutes();
 
-		this.app.use(express.static(this.lwcFolder));
+		this.app.use(express.static(path.resolve(this.lwcFolder)));
+		this.app.use(express.static(path.resolve("./src")));
 		this.util.logInfo({ message: `HTTPS web server fully configured (${this.lwcFolder})` });
 	}
 
