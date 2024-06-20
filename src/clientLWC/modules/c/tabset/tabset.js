@@ -57,6 +57,11 @@ export default class Tabset extends LightningElement {
 					page = params.get("page");
 				}
 
+				// If it's results... it should go back to the default tab
+				if (page === "Results") {
+					page = this.defaultTab;
+				}
+
 				let idx = this.tabs.findIndex((tab) => tab.label === page);
 				idx = idx < 0 ? 0 : idx;
 				this.showTab(idx);

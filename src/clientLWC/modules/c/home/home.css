@@ -1,6 +1,7 @@
 .pageSize {
 	height: calc(100vh - 250px);
 	width: 100%;
+	text-align: center;
 }
 
 .resource:hover {
