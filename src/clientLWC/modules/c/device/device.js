@@ -22,7 +22,7 @@ export default class JWT extends LightningElement {
 	}
 
 	onLoginClick() {
-		debugger;
+		// debugger;
 		this.prompt = null;
 		let urlencoded = new URLSearchParams();
 		urlencoded.append("response_type", "device_code");
