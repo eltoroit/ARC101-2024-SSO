@@ -109,7 +109,7 @@ export default class Util {
 	}
 
 	logError({ message, value }) {
-		debugger;
+		// debugger;
 
 		let output = [];
 		output.push(`❌  *--- START ---*`);
