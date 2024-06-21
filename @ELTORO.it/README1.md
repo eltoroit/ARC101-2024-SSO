@@ -8,9 +8,9 @@
 
 # Media Links
 
-- [Slides](Slides.ppsx)
-- Videos
-  - [TDX '21](https://play.vidyard.com/DUVaErx7xZh43UnYkGNCv6)
+-   [Slides](Slides.ppsx)
+-   Videos
+    -   [TDX '21](https://play.vidyard.com/DUVaErx7xZh43UnYkGNCv6)
 
 # Folders
 
@@ -20,39 +20,39 @@ This repo contains few folders:
 
 This folder has the certificates that will be used on different places:
 
-- HTTPS server if it's run locally (Heroku has it's own certificates)
-- The private key is used in the JWT OAuth flow
-- The public key is loaded to the Connected App
+-   HTTPS server if it's run locally (Heroku has it's own certificates)
+-   The private key is used in the JWT OAuth flow
+-   The public key is loaded to the Connected App
 
 **Notes:**
 
-- The private key is loaded via Config Vars (not files) when running in Heroku. This is useful because the code does not need to be deployed if the certificate changes.
+-   The private key is loaded via Config Vars (not files) when running in Heroku. This is useful because the code does not need to be deployed if the certificate changes.
 
 ## Webserver
 
-- This folder contains the code for the web application demo built with Node.js (back-end) and LWC (front-end).
+-   This folder contains the code for the web application demo built with Node.js (back-end) and LWC (front-end).
 
 ## Salesforce
 
-- This folder has the metadata needed to create a scratch org for the demo.
+-   This folder has the metadata needed to create a scratch org for the demo.
 
 # Instructions
 
 1. Clone this repo on your local machine
 2. Generate the SSL certificates
 3. Create a scratch org
-   - Open The Salesforce folder in VS Code as a Salesforce project to create and configure the scratch org
+    - Open The Salesforce folder in VS Code as a Salesforce project to create and configure the scratch org
 4. Running the web server:
-   - Use the Heroku app built for the demo ([click here](https://et-oauth.herokuapp.com/?page=Who%20Am%20I?))
-   - Run a Nodejs web server locally (https://localhost:4001)
-   - Click [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy) to create your own Heroku app
+    - Use the Heroku app built for the demo ([click here](https://et-oauth.herokuapp.com/?page=Who%20Am%20I?))
+    - Run a Nodejs web server locally (https://localhost:4001)
+    - Click [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy) to create your own Heroku app
 
 ## Clone this repo on your local machine
 
 Cloning this project locally will help you
 
-- Create the SSL certificates
-- Create the Salesforce Scratch org
+-   Create the SSL certificates
+-   Create the Salesforce Scratch org
 
 Once the repo is cloned, you can open the Salesforce folder in VS code and create a scratch org. If you also want to execute the web server locally, then open the Webserver project in a separate VS Code window. If you prefer to run the web application in Heroku, then you can use the Heroku button provided.
 
@@ -60,8 +60,8 @@ Once the repo is cloned, you can open the Salesforce folder in VS code and creat
 
 SSL/TLS certificates are used in HTTPS web servers and the JWT OAuth flow. If you are not familiar with SSL certificates and cryptography, I highly recommend you watch these two videos:
 
-- [Public Key Cryptography: RSA Encryption Algorithm](https://www.youtube.com/watch?v=wXB-V_Keiu8)
-- [Public key cryptography - Diffie-Hellman Key Exchange](https://www.youtube.com/watch?v=YEBfamv-_do)
+-   [Public Key Cryptography: RSA Encryption Algorithm](https://www.youtube.com/watch?v=wXB-V_Keiu8)
+-   [Public key cryptography - Diffie-Hellman Key Exchange](https://www.youtube.com/watch?v=YEBfamv-_do)
 
 They are a bit old, but VERY GOOD!
 
@@ -102,7 +102,7 @@ Email Address []:aperez@salesforce.com
 
 Please enter the following 'extra' attributes
 to be sent with your certificate request
-A challenge password []:
+A challenge password []: SomePassword
 ```
 
 You can see some of this information when you load the certificate in the Connected App in Salesforce, or using free tools online like these ones: https://www.sslshopper.com/ssl-certificate-tools.html, https://ssltools.godaddy.com/views
@@ -115,7 +115,7 @@ openssl x509 -req -sha256 -days 365 -in certificate.csr -signkey private.key -ou
 
 **Notes:**
 
-- Since this is a self-signed certificate, when you browse the local web server Chrome is going to give you a security warning. If so, then you may type `thisisunsafe` and it will let you in :-)
+-   Since this is a self-signed certificate, when you browse the local web server Chrome is going to give you a security warning. If so, then you may type `thisisunsafe` and it will let you in :-)
 
 <center>
 
@@ -179,27 +179,27 @@ Keep this values handy because you will need them later. If you need to get them
 
 There are a few more things that are required to be done manually on the Salesforce org, since it's not part of the deployable metadata. They include:
 
-- On the setup menu, go to `Apps > App Manager`
-  - Find the **IandAM** connected app and open it to edit it.
-  - If you generated your own certificate, then you must upload the **public.crt** file
-  - Make sure the **Enable for Device Flow** checkbox is selected
-  - If you are running this application on Heroku (or other server), you will need to add the URL address (**https://`domain`/callback**) on the callback URL
-  - Click Save
+-   On the setup menu, go to `Apps > App Manager`
 
+    -   Find the **IandAM** connected app and open it to edit it.
+    -   If you generated your own certificate, then you must upload the **public.crt** file
+    -   Make sure the **Enable for Device Flow** checkbox is selected
+    -   If you are running this application on Heroku (or other server), you will need to add the URL address (**https://`domain`/callback**) on the callback URL
+    -   Click Save
 
-- On the Setup menu, go to `Security > CORS`
-  - `Cross-Origin Resource Sharing (CORS) Policy Settings`
-    - Click the **Edit** button
-    - Make sure the **Enable CORS for OAuth endpoints** checkbox is selected
-    - Click **Save**
-  - `Allowed Origins List`
-    - If you are running this application on Heroku (or other server), you will need to add the URL address
-    - Click the **New** button
-    - In the **Origin URL Pattern** type the address of the Heroku app, like `https://YourApp.herokuapp.com`
+-   On the Setup menu, go to `Security > CORS`
+    -   `Cross-Origin Resource Sharing (CORS) Policy Settings`
+        -   Click the **Edit** button
+        -   Make sure the **Enable CORS for OAuth endpoints** checkbox is selected
+        -   Click **Save**
+    -   `Allowed Origins List`
+        -   If you are running this application on Heroku (or other server), you will need to add the URL address
+        -   Click the **New** button
+        -   In the **Origin URL Pattern** type the address of the Heroku app, like `https://YourApp.herokuapp.com`
 
 **Notes:**
 
-- Security CORS settings must be done in the org that you are logging into, not the org where the Connected App is configured.
+-   Security CORS settings must be done in the org that you are logging into, not the org where the Connected App is configured.
 
 # Running the web server
 
@@ -235,9 +235,9 @@ If you are running you own Heroku app, you will have to set these values too:
 
 As mentioned above, there are 3 options you could use:
 
-- Use the Heroku app built for the demo
-- Run a Nodejs web server locally
-- Click the Heroku button to create your own Heroku app
+-   Use the Heroku app built for the demo
+-   Run a Nodejs web server locally
+-   Click the Heroku button to create your own Heroku app
 
 You need to configure the settings for the web server app, but each o them is done slightly different. Let's review that.
 
@@ -260,11 +260,11 @@ If you prefer to run this Nodejs app on your own computer, you will need to foll
 3. Execute `npm run build:client` to build HTML site from LWC
 4. Execute `npm run ELTOROIT_SERVE` to serve the files and run the application
 5. Update the `.env` file as described above
-   - Note since this file has secured information is never a god idea to add that to a repo (much less a public one) so I have created a file named `OAuth.env` that you can use to clone into a new file named `.env` and save the values there.
+    - Note since this file has secured information is never a god idea to add that to a repo (much less a public one) so I have created a file named `OAuth.env` that you can use to clone into a new file named `.env` and save the values there.
 6. Open a browser and navigate to `https://localhost:4001`, it's recommended to use localhost instead of 127.0.0.1.
 
 ## Click the Heroku button to create your own Heroku app
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy) 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 The Heroku button can be used to create your own Heroku app. During the creation process, make sure to populate the settings values with the correct information. If you need to change them after the app is created you can go to `Settings` > `Reveal Config Vars` and change them there.

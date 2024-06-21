@@ -24,25 +24,26 @@ export default class SAML {
 		this.idp = saml.IdentityProvider({
 			metadata: readFileSync(path.resolve("samlMetadata/SAML_SP.xml")),
 			privateKey: readFileSync(path.resolve("cert/private.key")),
+			publicKey: readFileSync(path.resolve("cert/public.crt")),
 			// privateKeyPass: "jXmKf9By6ruLnUdRo90G",
 			isAssertionEncrypted: false,
-			// loginResponseTemplate: {
-			// 	context,
-			// 	attributes: [
-			// 		{
-			// 			name: "firstName",
-			// 			valueTag: "firstName",
-			// 			nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-			// 			valueXsiType: "xs:string",
-			// 		},
-			// 		{
-			// 			name: "lastName",
-			// 			valueTag: "lastName",
-			// 			nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-			// 			valueXsiType: "xs:string",
-			// 		},
-			// 	],
-			// },
+			loginResponseTemplate: {
+				context,
+				attributes: [
+					{
+						name: "firstName",
+						valueTag: "firstName",
+						nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+						valueXsiType: "xs:string",
+					},
+					{
+						name: "lastName",
+						valueTag: "lastName",
+						nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+						valueXsiType: "xs:string",
+					},
+				],
+			},
 		});
 	}
 
@@ -61,7 +62,9 @@ export default class SAML {
 			const strSAML = Buffer.from(context, "base64").toString("utf-8");
 			writeFileSync(path.resolve(`samlMetadata/Samples/Generated.xml`), strSAML);
 
-			res.status(200).send({ samlResponse: context, entityEndpoint });
+			// res.status(200).send({ samlResponse: context, entityEndpoint });
+			res.set("Content-Type", "application/xml");
+			res.status(200).send(strSAML);
 		} catch (e) {
 			console.log(e);
 			res.status(500).send();

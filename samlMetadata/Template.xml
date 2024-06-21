@@ -1,7 +1,6 @@
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="{ID}"
-    Version="2.0" IssueInstant="{IssueInstant}" Destination="{Destination}"
-    InResponseTo="{InResponseTo}">
+    Version="2.0" IssueInstant="{IssueInstant}" Destination="{Destination}">
     <saml:Issuer>{Issuer}</saml:Issuer>
     <samlp:Status>
         <samlp:StatusCode Value="{StatusCode}" />
@@ -15,7 +14,7 @@
             <saml:NameID Format="{NameIDFormat}">{username}</saml:NameID>
             <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
                 <saml:SubjectConfirmationData NotOnOrAfter="{SubjectConfirmationDataNotOnOrAfter}"
-                    Recipient="{SubjectRecipient}" InResponseTo="{InResponseTo}" />
+                    Recipient="{SubjectRecipient}" />
             </saml:SubjectConfirmation>
         </saml:Subject>
         <saml:AuthnStatement

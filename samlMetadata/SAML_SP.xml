@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-    entityID="https://localhost:4001/federatedSSO" validUntil="2034-06-19T11:49:42.109Z"
+    entityID="https://localhost:4001/federatedSSO_IdP" validUntil="2034-06-19T15:53:28.122Z"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-    <md:SPSSODescriptor WantAssertionsSigned="true"
+    <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true"
         protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <md:KeyDescriptor use="signing">
             <ds:KeyInfo>
