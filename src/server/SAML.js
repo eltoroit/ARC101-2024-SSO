@@ -24,8 +24,6 @@ export default class SAML {
 		this.idp = saml.IdentityProvider({
 			metadata: readFileSync(path.resolve("samlMetadata/SAML_SP.xml")),
 			privateKey: readFileSync(path.resolve("cert/private.key")),
-			publicKey: readFileSync(path.resolve("cert/public.crt")),
-			// privateKeyPass: "jXmKf9By6ruLnUdRo90G",
 			isAssertionEncrypted: false,
 			loginResponseTemplate: {
 				context,
