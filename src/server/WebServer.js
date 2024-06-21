@@ -43,6 +43,9 @@ export default class WebServer {
 		this.app.post("/getUser", this.getUser.bind(this));
 		this.app.get("/callback", this.callback.bind(this));
 		this.app.get("/settings", this.getSettings.bind(this));
+		this.app.get("/federatedSSO_IdP", this.util.saml.federatedSSO_IdP.bind(this.util.saml));
+		this.app.post("/federatedSSO_SP", this.util.saml.federatedSSO_SP.bind(this.util.saml));
+		this.app.get("/metadataIdP", this.util.saml.metadataIdP.bind(this.util.saml));
 	}
 
 	async renderLWC(req, res) {
@@ -87,7 +90,12 @@ export default class WebServer {
 			privateKey = process.env.JWT_PRIVATE_JEY;
 		}
 		privateKey = privateKey.trim();
-		let data = await this.util.oauthJWT.authorize({ clientId: process.env.OAUTH_CONSUMER_KEY, username: process.env.OAUTH_UN, audience: process.env.OAUTH_AUDIENCE, privateKey });
+		let data = await this.util.oauthJWT.authorize({
+			clientId: process.env.OAUTH_CONSUMER_KEY,
+			username: process.env.OAUTH_UN,
+			audience: process.env.OAUTH_AUDIENCE,
+			privateKey,
+		});
 		res.json(data);
 	}
 

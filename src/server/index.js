@@ -1,6 +1,7 @@
 import "dotenv/config";
 import fs from "fs";
 import UTIL from "./Util.js";
+import SAML from "./SAML.js";
 import OAUTH_JWT from "./OAuth_JWT.js";
 import WEB_SERVER from "./WebServer.js";
 
@@ -16,6 +17,7 @@ export default class OAuthDemo {
 
 	async intializeServer() {
 		const util = new UTIL();
+		const saml = new SAML({ util });
 		const oauthJWT = new OAUTH_JWT({ util });
 		const webserver = new WEB_SERVER({ util });
 
