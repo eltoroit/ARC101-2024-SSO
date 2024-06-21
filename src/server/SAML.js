@@ -1,6 +1,6 @@
 import path from "path";
 import saml from "samlify";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { randomUUID } from "crypto";
 
 export default class SAML {
@@ -20,52 +20,29 @@ export default class SAML {
 			metadata: readFileSync(path.resolve("samlMetadata/SAML_SP.xml")),
 		});
 
+		let context = readFileSync(path.resolve("samlMetadata/Template.xml")).toString();
 		this.idp = saml.IdentityProvider({
 			metadata: readFileSync(path.resolve("samlMetadata/SAML_SP.xml")),
 			privateKey: readFileSync(path.resolve("cert/private.key")),
 			// privateKeyPass: "jXmKf9By6ruLnUdRo90G",
 			isAssertionEncrypted: false,
-			loginResponseTemplate: {
-				context: `
-<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
-    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="{ID}" Version="2.0" IssueInstant="{IssueInstant}" Destination="{Destination}" InResponseTo="{InResponseTo}">
-    <saml:Issuer>{Issuer}</saml:Issuer>
-    <samlp:Status>
-        <samlp:StatusCode Value="{StatusCode}" />
-    </samlp:Status>
-    <saml:Assertion ID="{AssertionID}" Version="2.0" IssueInstant="{IssueInstant}"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
-        <saml:Issuer>{Issuer}</saml:Issuer>
-        <saml:Subject>
-            <saml:NameID Format="{NameIDFormat}">{username}</saml:NameID>
-            <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
-                <saml:SubjectConfirmationData NotOnOrAfter="{SubjectConfirmationDataNotOnOrAfter}" Recipient="{SubjectRecipient}" InResponseTo="{InResponseTo}" />
-            </saml:SubjectConfirmation>
-        </saml:Subject>
-        <saml:Conditions NotBefore="{ConditionsNotBefore}" NotOnOrAfter="{ConditionsNotOnOrAfter}">
-            <saml:AudienceRestriction>
-                <saml:Audience>{Audience}</saml:Audience>
-            </saml:AudienceRestriction>
-        </saml:Conditions>
-        {AttributeStatement}</saml:Assertion>
-</samlp:Response>`,
-				attributes: [
-					{
-						name: "firstName",
-						valueTag: "firstName",
-						nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-						valueXsiType: "xs:string",
-					},
-					{
-						name: "lastName",
-						valueTag: "lastName",
-						nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-						valueXsiType: "xs:string",
-					},
-				],
-			},
+			// loginResponseTemplate: {
+			// 	context,
+			// 	attributes: [
+			// 		{
+			// 			name: "firstName",
+			// 			valueTag: "firstName",
+			// 			nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+			// 			valueXsiType: "xs:string",
+			// 		},
+			// 		{
+			// 			name: "lastName",
+			// 			valueTag: "lastName",
+			// 			nameFormat: "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+			// 			valueXsiType: "xs:string",
+			// 		},
+			// 	],
+			// },
 		});
 	}
 
@@ -79,6 +56,10 @@ export default class SAML {
 				user,
 				this.#createTemplateCallback(user.email)
 			);
+
+			// Save the SAML
+			const strSAML = Buffer.from(context, "base64").toString("utf-8");
+			writeFileSync(path.resolve(`samlMetadata/Samples/Generated.xml`), strSAML);
 
 			res.status(200).send({ samlResponse: context, entityEndpoint });
 		} catch (e) {
@@ -113,7 +94,8 @@ export default class SAML {
 			const id = this.#generateRequestID();
 			const now = new Date();
 			let fiveMinutesLater = new Date();
-			fiveMinutesLater = fiveMinutesLater.setMinutes(fiveMinutesLater.getMinutes() + 5);
+			fiveMinutesLater.setMinutes(fiveMinutesLater.getMinutes() + 5);
+			fiveMinutesLater = new Date(fiveMinutesLater);
 
 			const tagValues = {
 				ID: id,
@@ -131,7 +113,7 @@ export default class SAML {
 				SubjectConfirmationDataNotOnOrAfter: fiveMinutesLater.toISOString(),
 				NameIDFormat: selectedNameIDFormat,
 				NameID: email,
-				InResponseTo: "null",
+				// InResponseTo: "_4fee3b046395c4e751011e97f8900b5273d56685",
 				AuthnStatement: "",
 				/**
 				 * Custom attributes
