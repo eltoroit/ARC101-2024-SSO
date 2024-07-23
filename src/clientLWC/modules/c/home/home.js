@@ -19,6 +19,8 @@ export default class Home extends LightningElement {
 
 	onSettingsChanged(event) {
 		this.settings = event.detail;
+		console.log("***", this.settings);
+		// debugger;
 	}
 
 	onResults(event) {

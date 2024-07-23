@@ -6,3 +6,7 @@
 input {
     width: 100%;
 }
+
+.disabled {
+    background-color: #E0E0E0;
+}

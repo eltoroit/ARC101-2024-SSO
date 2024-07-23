@@ -22,26 +22,35 @@
                             <div class="slds-align_absolute-center pageSize"
                                 style="background-color: white; height: 100%">
                                 <c-settings settings={settings} onsettingschange={onSettingsChanged}>
-                                    <div class="slds-align_absolute-center slds-text-heading_medium"
-                                        style="color: blue">
-                                        <div class="slds-grid slds-wrap">
-                                            <div class="slds-col slds-size_12-of-12">
-                                                This could be permanently changed in the .env file (running locally
-                                                using localhost) or the Config Vars (in your own Heroku web app)
-                                            </div>
-                                            <div class="slds-col slds-size_12-of-12">
-                                                You can create your own Heroku app using this button...
-                                                <a
-                                                    href="https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Feltoroit%2Fet-oauth">
-                                                    <img src="/resources/HerokuButton.png" />
-                                                </a>
-                                            </div>
+                                    <!--
+                                    I tried changing this in JavaScript (client side, but it also needs to be changed server side). I can't do that because it will change it for every student.
+                                    <div class="slds-grid slds-wrap" slot="additionalInput">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <c-settings-from-json settings={settings}
+                                                onsettingschange={onSettingsChanged}></c-settings-from-json>
+                                        </div>
+                                    </div>
+                                    -->
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_12-of-12 slds-align_absolute-center slds-text-heading_medium"
+                                            style="color: blue">
+                                            This could be permanently changed in the .env file (running locally
+                                            using localhost) or the Config Vars (in your own Heroku web app)
+                                        </div>
+                                        <div
+                                            class="slds-col slds-size_12-of-12 slds-align_absolute-center slds-text-heading_medium">
+                                            You can create your own Heroku app using this button...
+                                            <a
+                                                href="
+                                            https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Feltoroit%2Fet-oauth">
+                                                <img src="/resources/HerokuButton.png" />
+                                            </a>
                                         </div>
                                     </div>
                                 </c-settings>
                             </div>
                         </c-tab>
-                        <c-tab label=" Web Server">
+                        <c-tab label="Web Server">
                             <div class="slds-align_absolute-center pageSize"
                                 style="background-color: white; height: 100%">
                                 <c-web-server settings={settings} onresults={onResults} class="fullPage"></c-web-server>

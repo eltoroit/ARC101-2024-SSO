@@ -5,14 +5,18 @@
                 <div class="slds-form-element" key={input.key}>
                     <div class="label">{input.label}</div>
                     <div class="slds-form-element__control">
-                        <input type="text" data-key={input.key} value={input.value} disabled={disabled}
-                            readonly={readonly} onchange={onValueChange} onclick={onClick}></input>
+                        <input type="text" data-key={input.key} value={input.value} disabled={input.disabled}
+                            readonly={input.readonly} onchange={onValueChange} onclick={onClick}
+                            class={input.class}></input>
                     </div>
                 </div>
             </template>
+            <slot name="additionalInput"></slot>
             <br />
             <div class="slds-align_absolute-center">
-                <slot></slot>
+                <div>
+                    <slot></slot>
+                </div>
             </div>
         </div>
     </div>
