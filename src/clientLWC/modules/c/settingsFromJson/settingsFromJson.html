@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-form">
+        <div class="slds-form-element">
+            <div class="label" style="text-align: left;">Callback URL</div>
+            <div class="slds-form-element__control">
+                <input type="text" value={callbackURL} onchange={onCallbackUrlChange}></input>
+            </div>
+        </div>
+        <div class="slds-form-element">
+            <div class="label" style="text-align: left;">etLogs/_user.json</div>
+            <div class="slds-form-element__control">
+                <!-- <input type="text" data-key={input.key} value={input.value} disabled={input.disabled}
+                        readonly={input.readonly} onchange={onValueChange} onclick={onClick}
+                        class={input.class}></input> -->
+                <textarea rows="20" placeholder="Paste value of etLogs/_user.json here" onpaste={onPaste}></textarea>
+            </div>
+        </div>
+    </div>
+</template>
