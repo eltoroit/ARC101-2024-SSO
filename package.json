@@ -1,6 +1,8 @@
 {
 	"type": "module",
 	"scripts": {
+		"PKE_findSharedKey": "node ./src/PKE/findSharedKey.js",
+		"PKE_findDiffieHellmanParameters": "node ./src/PKE/findDiffieHellmanParameters.js",
 		"compileLWC": "./build.sh",
 		"serve": "node ./src/server/index.js",
 		"watchLWC": "nodemon --watch src/clientLWC --ext js,html,css --exec './build.sh'",
@@ -8,6 +10,7 @@
 	},
 	"dependencies": {
 		"@salesforce-ux/design-system": "^2.24.3",
+		"bignumber.js": "^9.1.2",
 		"cors": "2.8.5",
 		"dotenv": "16.4.5",
 		"ejs": "3.1.10",
@@ -17,8 +20,8 @@
 	"devDependencies": {
 		"@lwc/rollup-plugin": "^6.7.2",
 		"@rollup/plugin-replace": "^5.0.7",
+		"lightning-base-components": "1.22.3-alpha",
 		"lwc": "^6.7.2",
-		"rollup": "^4.18.0",
-		"lightning-base-components": "1.22.3-alpha"
+		"rollup": "^4.18.0"
 	}
 }
