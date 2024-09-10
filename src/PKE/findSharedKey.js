@@ -1,10 +1,11 @@
 import BigNumber from "bignumber.js";
 
-let prime = 113;
-let max = 200;
+let prime = 1009;
+let max = 100;
 
 class PublicKeyEncryption {
 	// Good values:
+	// P: 11, G: 2
 	// P: 17, G: 3
 	// P: 23, G: 5
 	// P: 29, G: 2
@@ -232,6 +233,7 @@ pke.PUBLIC.G_Generator = prn;
 pke.PUBLIC.max = max;
 // console.log(`Trying: P: ${pke.PUBLIC.P_Base}, G:  ${pke.PUBLIC.G_Generator}, max: ${max}`);
 for (let P1_PRIVATE = 1; P1_PRIVATE <= max; P1_PRIVATE++) {
+	console.log(P1_PRIVATE);
 	for (let P2_PRIVATE = 1; P2_PRIVATE <= max; P2_PRIVATE++) {
 		if (pke.sharedKey({ P1_PRIVATE, P2_PRIVATE })) {
 			// OK
@@ -243,6 +245,7 @@ for (let P1_PRIVATE = 1; P1_PRIVATE <= max; P1_PRIVATE++) {
 }
 console.log(`MATCHES: ${pke.MATCHES} (${Math.sqrt(pke.MATCHES)})`);
 console.log(`SECRETS: ${Array.from(pke.SECRETS.keys()).length}`);
+console.log(`SECRETS`, pke.SECRETS);
 if (worked) {
 	console.log(`WORKED:P: ${pke.PUBLIC.P_Base}, G: ${pke.PUBLIC.G_Generator}, max: ${max}`);
 } else {
