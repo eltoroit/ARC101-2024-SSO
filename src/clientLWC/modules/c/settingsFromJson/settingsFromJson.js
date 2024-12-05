@@ -65,6 +65,7 @@ export default class Home extends LightningElement {
 				LOGIN_URL: { label: 'Login Url', value: userData.loginServer },
 				CONSUMER_KEY: { label: 'Consumer Key', value: userData.ConsumerKey },
 				CONSUMER_SECRET: { label: 'Consumer Secret', value: userData.ConsumerSecret },
+				MY_DOMAIN: { label: 'My Domain', value: userData._MyDomain },
 				CALLBACK: { label: 'Callback', value: this.callbackURL },
 			};
 			this.dispatchEvent(new CustomEvent('settingschange', { bubbles: true, composed: true, detail: this.settings }));

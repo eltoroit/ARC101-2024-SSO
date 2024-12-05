@@ -113,13 +113,14 @@ export default class WebServer {
 		let output = {};
 		if (userData) {
 			output = {
-				UN: { label: 'Username', value: userData.OAUTH_UN },
-				PW: { label: 'Password', value: process.env.OAUTH_PW },
-				LOGIN_URL: { label: 'Login Url', value: process.env.OAUTH_LOGIN_URL },
-				CONSUMER_KEY: { label: 'Consumer Key', value: process.env.OAUTH_CONSUMER_KEY },
-				CONSUMER_SECRET: { label: 'Consumer Secret', value: process.env.OAUTH_CONSUMER_SECRET },
-				// SECURITY_TOKEN: { label: "Security Token", value: process.env.OAUTH_SECURITY_TOKEN },
-				CALLBACK: { label: 'Callback', value: process.env.OAUTH_CALLBACK },
+				UN: { label: 'Username', value: userData.UN.value },
+				PW: { label: 'Password', value: userData.PW.value },
+				LOGIN_URL: { label: 'Login Url', value: userData.LOGIN_URL.value },
+				CONSUMER_KEY: { label: 'Consumer Key', value: userData.CONSUMER_KEY.value },
+				CONSUMER_SECRET: { label: 'Consumer Secret', value: userData.CONSUMER_SECRET.value },
+				MY_DOMAIN: { label: 'My Domain', value: userData.MY_DOMAIN.value },
+				// SECURITY_TOKEN: { label: "Security Token", value: userData.SECURITY_TOKEN.value },
+				CALLBACK: { label: 'Callback', value: userData.CALLBACK.value },
 			};
 		}
 		res.status(200).json(output);
