@@ -1,20 +1,20 @@
-import pkgFollowRedirects from "follow-redirects";
+import pkgFollowRedirects from 'follow-redirects';
 const { https } = pkgFollowRedirects;
 
 export default class Util {
 	_setHeaders(request, contentType) {
 		switch (contentType) {
 			case `JSON`: {
-				request.headers["Content-Type"] = `application/json`;
+				request.headers['Content-Type'] = `application/json`;
 				break;
 			}
 			case `FORM`: {
-				request.headers["Content-Type"] = `application/x-www-form-urlencoded`;
+				request.headers['Content-Type'] = `application/x-www-form-urlencoded`;
 				break;
 			}
 			case `SOAP`: {
 				request.headers.SOAPAction = `''`;
-				request.headers["Content-Type"] = `text/xml`;
+				request.headers['Content-Type'] = `text/xml`;
 				break;
 			}
 			default:
@@ -26,7 +26,7 @@ export default class Util {
 		let output = {};
 		const SERVER = process.env.SERVER;
 
-		if (SERVER === "Local") {
+		if (SERVER === 'Local') {
 			output.url = `https://localhost:4001`;
 		} else {
 			output.url = `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`;
@@ -59,10 +59,10 @@ export default class Util {
 			const req = https.request(request, (res) => {
 				let chunks = [];
 
-				res.on("data", (chunk) => {
+				res.on('data', (chunk) => {
 					chunks.push(chunk);
 				});
-				res.on("end", () => {
+				res.on('end', () => {
 					let body = Buffer.concat(chunks).toString();
 					try {
 						body = JSON.parse(body);
@@ -78,15 +78,15 @@ export default class Util {
 						body,
 					});
 				});
-				res.on("error", (error) => {
+				res.on('error', (error) => {
 					reject(error);
 				});
 			});
 
 			// Post data
 			if (postData) {
-				if (typeof postData !== "string") {
-					throw new Error("postData must be a string!");
+				if (typeof postData !== 'string') {
+					throw new Error('postData must be a string!');
 				}
 				req.write(postData);
 			}
@@ -96,16 +96,16 @@ export default class Util {
 	}
 
 	toBase64(input) {
-		return Buffer.from(input, "utf8").toString("base64");
+		return Buffer.from(input, 'utf8').toString('base64');
 	}
 
 	fromBase64(input) {
-		return Buffer.from(input, "base64").toString("utf8");
+		return Buffer.from(input, 'base64').toString('utf8');
 	}
 
 	logInfo({ message, value }) {
 		// console.log(`ℹ️  - ${message}`, value);
-		console.log(`ℹ️  - ${message}`, value !== undefined ? JSON.stringify(value) : "");
+		console.log(`ℹ️  - ${message}`, value !== undefined ? JSON.stringify(value) : '');
 	}
 
 	logError({ message, value }) {
@@ -120,21 +120,21 @@ export default class Util {
 			output.push(`❌  - \n${this.errorToText(value)}`);
 		}
 		let stack = new Error().stack;
-		stack = stack.split("\n");
-		stack = stack.filter((line) => line.includes("/src/")); // && !line.includes('/Util.js')
+		stack = stack.split('\n');
+		stack = stack.filter((line) => line.includes('/src/')); // && !line.includes('/Util.js')
 		originalStack.forEach((line) => output.push(`❌  - ${line}`));
 		stack.forEach((line) => output.push(`❌  - ${line}`));
 		output.push(`❌  *--- END ---*`);
 	}
 
 	errorToText(error, nested = false) {
-		if (error === null) return "null";
-		if (error === undefined) return "undefined";
-		if (typeof error === "string") return error;
+		if (error === null) return 'null';
+		if (error === undefined) return 'undefined';
+		if (typeof error === 'string') return error;
 
 		const getValue = (object, key) => {
 			let value = object[key];
-			if (typeof value === "object") {
+			if (typeof value === 'object') {
 				object[key] = this.errorToText(value, true);
 			} else {
 				object[key] = value;
@@ -146,14 +146,14 @@ export default class Util {
 		let result = Object.create(error);
 		for (let key of Object.keys(result)) {
 			keys.push(key);
-			if (key !== "stack") {
+			if (key !== 'stack') {
 				result[key] = getValue(result, key);
 			}
 		}
 		for (let key of Object.getOwnPropertyNames(error)) {
 			if (!keys.includes(key)) {
 				keys.push(key);
-				if (key !== "stack") {
+				if (key !== 'stack') {
 					result[key] = getValue(result, key);
 				}
 			}
@@ -171,13 +171,13 @@ export default class Util {
 			if (!error) throw new Error();
 			if (!error.stack) throw new Error();
 
-			output = error.stack.split("\n");
+			output = error.stack.split('\n');
 			if (!(Array.isArray(output) && output.length >= 1)) throw new Error();
 
-			output = output.filter((line) => line.includes("/src/"));
+			output = output.filter((line) => line.includes('/src/'));
 			if (!(Array.isArray(output) && output.length >= 1)) throw new Error();
 
-			output = output.filter((line) => line.trim().startsWith("at "));
+			output = output.filter((line) => line.trim().startsWith('at '));
 			if (!(Array.isArray(output) && output.length >= 1)) throw new Error();
 
 			delete error.stack;
@@ -219,7 +219,7 @@ export default class Util {
 	}
 
 	assert({ job, trueValue, message }) {
-		if (typeof trueValue !== "boolean") {
+		if (typeof trueValue !== 'boolean') {
 			message = `${job.id}@${job.data.step} | Assertion failed | Boolean expression was expected! [${trueValue}] | ${message}`;
 			this.logError({ trueValue, message });
 			throw new Error(JSON.stringify({ trueValue, message }));

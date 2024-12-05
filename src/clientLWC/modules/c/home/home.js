@@ -1,11 +1,11 @@
-import { LightningElement } from "lwc";
+import { LightningElement } from 'lwc';
 
 export default class Home extends LightningElement {
 	settings = {};
 	OAuthData = {};
 
 	connectedCallback() {
-		fetch("/settings")
+		fetch('/settings')
 			.then((response) => response.json())
 			.then((data) => {
 				this._switchTab();
@@ -19,15 +19,14 @@ export default class Home extends LightningElement {
 
 	onSettingsChanged(event) {
 		this.settings = event.detail;
-		console.log("***", this.settings);
-		// debugger;
+		console.log('***', this.settings);
 	}
 
 	onResults(event) {
 		this.OAuthData = event.detail;
 		if (this.OAuthData.data.id_token) {
 			let IdToken = this.OAuthData.data.id_token;
-			let strOpenID = atob(IdToken.split(".")[1]);
+			let strOpenID = atob(IdToken.split('.')[1]);
 			let OpenID = JSON.parse(strOpenID);
 			this.OAuthData.OpenID = OpenID;
 			this.OAuthData.strOpenID = this._getText(OpenID);
@@ -36,7 +35,7 @@ export default class Home extends LightningElement {
 		}
 		this.OAuthData.strData = this._getText(this.OAuthData.data);
 		console.log(this.OAuthData);
-		this._switchTab("Results");
+		this._switchTab('Results');
 	}
 
 	_switchTab(page) {
@@ -44,19 +43,19 @@ export default class Home extends LightningElement {
 		if (!page) {
 			let url = window.location;
 			let params = new URLSearchParams(url.search);
-			if (params.has("page")) {
-				page = params.get("page");
+			if (params.has('page')) {
+				page = params.get('page');
 			}
 		}
 
-		let tabs = Array.from(this.template.querySelectorAll("c-tab"));
+		let tabs = Array.from(this.template.querySelectorAll('c-tab'));
 		tabs.forEach((tab, index) => {
 			if (tab.label === page) {
 				pageFound = index;
 			}
 		});
 		if (pageFound >= 0) {
-			let tabset = this.template.querySelector("c-tabset");
+			let tabset = this.template.querySelector('c-tabset');
 			tabset.showTab(pageFound);
 		}
 	}
@@ -65,12 +64,12 @@ export default class Home extends LightningElement {
 		// return JSON.stringify(data, null, 2);
 		let output = null;
 		if (data) {
-			output = "{\n";
+			output = '{\n';
 			let keys = Object.keys(data).sort((a, b) => (a < b ? -1 : 1));
 			keys.forEach((key) => {
 				output += `  "${key}":${JSON.stringify(data[key])},\n`;
 			});
-			output += "}";
+			output += '}';
 		}
 		return output;
 	}

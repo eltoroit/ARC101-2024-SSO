@@ -1,9 +1,17 @@
-textarea {
+input {
   width: 100%;
   box-sizing: border-box;
 }
 
-input {
+table {
   width: 100%;
-  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  white-space: nowrap;
+  vertical-align: top;
+  padding: 5px;
+  border: 1px solid #666;
 }

@@ -1,10 +1,11 @@
-import fs from "fs";
-import ejs from "ejs";
-import cors from "cors";
-import path from "path";
-import https from "https";
-import qs from "querystring";
-import express from "express";
+import fs from 'fs';
+import ejs from 'ejs';
+import cors from 'cors';
+import path from 'path';
+import https from 'https';
+import qs from 'querystring';
+import express from 'express';
+import cookieParser from 'cookie-parser';
 
 export default class WebServer {
 	app = null;
@@ -12,7 +13,7 @@ export default class WebServer {
 	redis = null;
 	config = null;
 	workQueue = null;
-	lwcFolder = "./dist";
+	lwcFolder = './dist';
 
 	constructor({ util }) {
 		this.util = util;
@@ -21,35 +22,38 @@ export default class WebServer {
 
 	initialize(config) {
 		console.log(JSON.stringify(config));
-		this.util.logInfo({ message: "Creating Web server..." });
+		this.util.logInfo({ message: 'Creating Web server...' });
 		this.config = config;
 		this.app = express();
-		this.app.set("view engine", "ejs");
-		this.app.set("views", path.resolve("src/views"));
+		this.app.set('view engine', 'ejs');
+		this.app.set('views', path.resolve('src/views'));
 
 		this.makeServer();
 		this.app.use(express.json());
 		this.app.use(cors(this._CORS()));
+		this.app.use(cookieParser());
 		this.createRoutes();
 
 		this.app.use(express.static(path.resolve(this.lwcFolder)));
-		this.app.use(express.static(path.resolve("./src")));
+		this.app.use(express.static(path.resolve('./src')));
 		this.util.logInfo({ message: `HTTPS web server fully configured (${this.lwcFolder})` });
 	}
 
 	createRoutes() {
-		this.app.get("/home", this.renderLWC.bind(this));
-		this.app.get("/jwt", this.oauthJWT.bind(this));
-		this.app.post("/getUser", this.getUser.bind(this));
-		this.app.get("/callback", this.callback.bind(this));
-		this.app.get("/settings", this.getSettings.bind(this));
+		this.app.get('/home', this.renderLWC.bind(this));
+		this.app.get('/jwt', this.oauthJWT.bind(this));
+		this.app.post('/getUser', this.getUser.bind(this));
+		this.app.get('/callback', this.callback.bind(this));
+		this.app.get('/settings', this.getSettings.bind(this));
 	}
 
 	async renderLWC(req, res) {
-		res.sendFile(path.resolve(this.lwcFolder, "index.html"));
+		res.sendFile(path.resolve(this.lwcFolder, 'index.html'));
 	}
 
 	async callback(req, res) {
+		const userData = this.getUserDataFromCookie({ req, res });
+
 		let code = req.query.code;
 		if (code) {
 			let request = {
@@ -67,49 +71,72 @@ export default class WebServer {
 			this.util
 				.makeCallout(request)
 				.then((response) => {
-					res.render("WebServerCallback", { data: JSON.stringify(response.body, null, 2) });
+					res.render('WebServerCallback', { data: JSON.stringify(response.body, null, 2) });
 				})
 				.catch((err) => {
-					this.util.logError({ message: "Error obtaining Access Token", value: err });
-					res.render("WebServerCallback", { data: JSON.stringify(err, null, 2) });
+					this.util.logError({ message: 'Error obtaining Access Token', value: err });
+					res.render('WebServerCallback', { data: JSON.stringify(err, null, 2) });
 				});
 		} else {
-			res.render("UserAgentCallback", { data: "NOTHING" });
+			res.render('UserAgentCallback', { data: 'NOTHING' });
 		}
 	}
 
 	async oauthJWT(req, res) {
-		// debugger;
+		debugger;
 		let privateKey = null;
 		if (this.config.isLocalhost) {
-			privateKey = fs.readFileSync(path.resolve("./cert", "private.key")).toString("utf8");
+			privateKey = fs.readFileSync(path.resolve('./cert', 'private.key')).toString('utf8');
 		} else {
 			privateKey = process.env.JWT_PRIVATE_JEY;
 		}
 		privateKey = privateKey.trim();
-		let data = await this.util.oauthJWT.authorize({ clientId: process.env.OAUTH_CONSUMER_KEY, username: process.env.OAUTH_UN, audience: process.env.OAUTH_AUDIENCE, privateKey });
+		let data = await this.util.oauthJWT.authorize({
+			clientId: process.env.OAUTH_CONSUMER_KEY,
+			username: process.env.OAUTH_UN,
+			audience: process.env.OAUTH_AUDIENCE,
+			privateKey,
+		});
 		res.json(data);
 	}
 
 	async getUser(req, res) {
 		let data = req.body;
 		this.util
-			.makeCallout({ method: "GET", url: data.id, authorization: `Bearer ${data.access_token}` })
+			.makeCallout({ method: 'GET', url: data.id, authorization: `Bearer ${data.access_token}` })
 			.then((results) => res.json(results))
 			.catch((err) => res.json(err));
 	}
 
 	async getSettings(req, res) {
-		let output = {
-			UN: { label: "Username", value: process.env.OAUTH_UN },
-			PW: { label: "Password", value: process.env.OAUTH_PW },
-			LOGIN_URL: { label: "Login Url", value: process.env.OAUTH_LOGIN_URL },
-			CONSUMER_KEY: { label: "Consumer Key", value: process.env.OAUTH_CONSUMER_KEY },
-			CONSUMER_SECRET: { label: "Consumer Secret", value: process.env.OAUTH_CONSUMER_SECRET },
-			// SECURITY_TOKEN: { label: "Security Token", value: process.env.OAUTH_SECURITY_TOKEN },
-			CALLBACK: { label: "Callback", value: process.env.OAUTH_CALLBACK },
-		};
+		const userData = this.getUserDataFromCookie({ req, res, canBeEmpty: true });
+		let output = {};
+		if (userData) {
+			output = {
+				UN: { label: 'Username', value: userData.OAUTH_UN },
+				PW: { label: 'Password', value: process.env.OAUTH_PW },
+				LOGIN_URL: { label: 'Login Url', value: process.env.OAUTH_LOGIN_URL },
+				CONSUMER_KEY: { label: 'Consumer Key', value: process.env.OAUTH_CONSUMER_KEY },
+				CONSUMER_SECRET: { label: 'Consumer Secret', value: process.env.OAUTH_CONSUMER_SECRET },
+				// SECURITY_TOKEN: { label: "Security Token", value: process.env.OAUTH_SECURITY_TOKEN },
+				CALLBACK: { label: 'Callback', value: process.env.OAUTH_CALLBACK },
+			};
+		}
 		res.status(200).json(output);
+	}
+
+	getUserDataFromCookie({ req, res, canBeEmpty = false }) {
+		let userData = req.cookies.userData;
+		if (userData) {
+			userData = JSON.parse(userData);
+		} else {
+			if (canBeEmpty) {
+				userData = {};
+			} else {
+				throw 'No cookie found!';
+			}
+		}
+		return userData;
 	}
 
 	// #region WEB SERVER
@@ -118,29 +145,24 @@ export default class WebServer {
 			origin: (origin, callback, ...other) => {
 				// if (origin) {
 				//     if (origin.endsWith(".lightning.force.com")) {
-				//         debugger;
 				//         // Any salesforce org, which is not cool
 				//         callback(null, true);
 				//     } else if (origin.endsWith(".herokuapp.com")) {
 				//         // This is any heroku app, which is not cool!
-				//         debugger;
 				//         callback(null, true);
 				//     } else if (origin.endsWith("localhost")) {
-				//         debugger;
 				//         callback(null, true);
 				//     } else {
-				//         debugger;
 				//         callback(new Error('Not allowed by CORS'));
 				//     }
 				// } else {
-				//     debugger;
 				//     // No CORS requested, just accept it :-)
 				//     callback(null, true);
 				// }
 				//Accept whatever!
 				callback(null, true);
 			},
-			methods: ["GET", "POST"],
+			methods: ['GET', 'POST'],
 		};
 	}
 
@@ -148,8 +170,8 @@ export default class WebServer {
 		if (this.config.isLocalhost) {
 			const serverHTTPS = https.createServer(
 				{
-					key: fs.readFileSync(path.resolve("./cert", "private.key")),
-					cert: fs.readFileSync(path.resolve("./cert", "public.crt")),
+					key: fs.readFileSync(path.resolve('./cert', 'private.key')),
+					cert: fs.readFileSync(path.resolve('./cert', 'public.crt')),
 				},
 				this.app
 			);

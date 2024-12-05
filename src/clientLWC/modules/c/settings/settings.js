@@ -1,4 +1,4 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api } from 'lwc';
 
 export default class Settings extends LightningElement {
 	list = [];
@@ -23,28 +23,12 @@ export default class Settings extends LightningElement {
 		this.makeList();
 	}
 
-	// get disabled() {
-	// 	return false;
-	// }
-
-	// get readonly() {
-	// 	// let output = false;
-	// 	// if (this.keys) {
-	// 	// 	output = this.keys.length > 0;
-	// 	// }
-	// 	// return output;
-	// 	return true;
-	// }
-
 	makeList() {
 		this.list = [];
 		if (this.settings && this.keys) {
 			for (let key in this.settings) {
 				if ({}.hasOwnProperty.call(this.settings, key)) {
-					// let isCallback = key === "CALLBACK";
-					// if (!isCallback) {
 					this.list.push({ key, ...this.settings[key], readonly: true, disabled: false, class: `disabled` });
-					// }
 				}
 			}
 			if (this.keys.length > 0) {
@@ -52,14 +36,6 @@ export default class Settings extends LightningElement {
 			}
 			console.log(this.list);
 		}
-	}
-
-	onValueChange(event) {
-		// let key = event.target.attributes["data-key"].value;
-		// let item = { ...this.settings[key] };
-		// item.value = event.target.value;
-		// this.settings[key] = item;
-		// this.dispatchEvent(new CustomEvent("settingschange", { bubbles: true, composed: true, detail: this.settings }));
 	}
 
 	onClick(event) {
@@ -71,7 +47,7 @@ export default class Settings extends LightningElement {
 					alert(`Copied: ${value}`);
 				})
 				.catch((err) => {
-					alert("Error copying to the clipboard");
+					alert('Error copying to the clipboard');
 				});
 		}
 	}

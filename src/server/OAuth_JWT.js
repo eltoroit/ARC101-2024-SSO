@@ -1,11 +1,10 @@
-import qs from "querystring";
-import { createSign } from "crypto";
+import qs from 'querystring';
+import { createSign } from 'crypto';
 
 export default class OAuth_JWT {
 	util = null;
 
 	constructor({ util }) {
-		// debugger;
 		this.util = util;
 		this.util.oauthJWT = this;
 	}
@@ -17,9 +16,9 @@ export default class OAuth_JWT {
 
 			this.util
 				.makeCallout({
-					method: "POST",
+					method: 'POST',
 					url: `${audience}/services/oauth2/token`,
-					contentType: "FORM",
+					contentType: 'FORM',
 					postData: qs.stringify({
 						grant_type: `urn:ietf:params:oauth:grant-type:jwt-bearer`,
 						assertion: signedJWT,
@@ -35,7 +34,7 @@ export default class OAuth_JWT {
 	}
 
 	createJWT({ clientId, username, audience }) {
-		let header = { alg: "RS256" };
+		let header = { alg: 'RS256' };
 		header = JSON.stringify(header);
 		header = this.toBase64url(header);
 
@@ -48,7 +47,7 @@ export default class OAuth_JWT {
 	}
 
 	signJWT({ JWT, privateKey }) {
-		const sign = createSign("RSA-SHA256");
+		const sign = createSign('RSA-SHA256');
 		sign.update(JWT);
 		sign.end();
 
@@ -73,7 +72,7 @@ export default class OAuth_JWT {
 		// https://datatracker.ietf.org/doc/html/rfc4648#section-5
 
 		let output = this.util.toBase64(string);
-		output = output.replace(/\+/g, "-").replace(/\//g, "_");
+		output = output.replace(/\+/g, '-').replace(/\//g, '_');
 		// output = output.replace(/=/g, '');
 		return output;
 	}

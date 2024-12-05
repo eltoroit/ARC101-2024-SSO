@@ -10,3 +10,24 @@ input {
 .disabled {
     background-color: #E0E0E0;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    white-space: nowrap;
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #666;
+}
+
+td {
+    white-space: break-spaces;
+    word-wrap: break-word;
+    word-break: break-all;
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #666;
+}

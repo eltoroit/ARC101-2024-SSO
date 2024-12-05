@@ -1,0 +1,15 @@
+{
+	"extends": "@salesforce/eslint-config-lwc/recommended",
+	"rules": {
+		"no-console": "off",
+		"no-debugger": "off",
+		"no-alert": "error",
+		"no-unused-vars": "off",
+		// "indent": ["error", "tab"],
+		// "quotes": ["error", "single"],
+		"@lwc/lwc/no-async-await": "off",
+		"@lwc/lwc/no-async-operation": "off",
+		"@lwc/lwc/no-api-reassignments": "off",
+		"semi": ["error", "always"]
+	}
+}

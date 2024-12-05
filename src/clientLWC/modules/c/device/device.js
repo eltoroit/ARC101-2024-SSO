@@ -1,4 +1,4 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api } from 'lwc';
 
 export default class JWT extends LightningElement {
 	@api settings;
@@ -22,19 +22,19 @@ export default class JWT extends LightningElement {
 	}
 
 	onLoginClick() {
-		// debugger;
+		debugger;
 		this.prompt = null;
 		let urlencoded = new URLSearchParams();
-		urlencoded.append("response_type", "device_code");
-		urlencoded.append("client_id", this.settings.CONSUMER_KEY.value);
+		urlencoded.append('response_type', 'device_code');
+		urlencoded.append('client_id', this.settings.CONSUMER_KEY.value);
 
 		fetch(`${this.settings.LOGIN_URL.value}/services/oauth2/token`, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
+				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			body: urlencoded,
-			redirect: "follow",
+			redirect: 'follow',
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -46,7 +46,7 @@ export default class JWT extends LightningElement {
 						code: data.user_code,
 					};
 					this.makeQRCode(data);
-					this.authWindow = window.open(data.verification_uri, "_blank", "width=400,height=600");
+					this.authWindow = window.open(data.verification_uri, '_blank', 'width=400,height=600');
 					clearInterval(this.timer.interval);
 					this.timer.last = new Date();
 					this.timer.interval = setInterval(() => {
@@ -55,25 +55,25 @@ export default class JWT extends LightningElement {
 				}
 			})
 			.catch((error) => {
-				console.error("error", error);
+				console.error('error', error);
 				alert(error);
 			});
 	}
 
 	checkAuthorization(deviceCode) {
 		let urlencoded = new URLSearchParams();
-		urlencoded.append("grant_type", "device");
-		urlencoded.append("client_id", this.settings.CONSUMER_KEY.value);
-		urlencoded.append("code", deviceCode);
+		urlencoded.append('grant_type', 'device');
+		urlencoded.append('client_id', this.settings.CONSUMER_KEY.value);
+		urlencoded.append('code', deviceCode);
 
 		this.timer.last = new Date();
 		fetch(`${this.settings.LOGIN_URL.value}/services/oauth2/token`, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
+				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			body: urlencoded,
-			redirect: "follow",
+			redirect: 'follow',
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -83,14 +83,14 @@ export default class JWT extends LightningElement {
 					clearInterval(this.timer.interval);
 					this.timer.interval = null;
 					setTimeout(() => {
-						this.dispatchEvent(new CustomEvent("results", { bubbles: true, composed: true, detail: { data } }));
+						this.dispatchEvent(new CustomEvent('results', { bubbles: true, composed: true, detail: { data } }));
 					}, 0);
 				}
 			})
 			.catch((error) => {
 				clearInterval(this.timer.interval);
 				this.timer.interval = null;
-				console.error("error", error);
+				console.error('error', error);
 				alert(error);
 			});
 	}
@@ -103,8 +103,8 @@ export default class JWT extends LightningElement {
 				text: data.verification_uri,
 				width: 300,
 				height: 300,
-				colorDark: "#000000",
-				colorLight: "#ffffff",
+				colorDark: '#000000',
+				colorLight: '#ffffff',
 				correctLevel: _QRCode.CorrectLevel.H,
 			});
 		}, 0);
@@ -118,7 +118,7 @@ export default class JWT extends LightningElement {
 				alert(`Copied: ${value}`);
 			})
 			.catch((err) => {
-				alert("Error copying to the clipboard");
+				alert('Error copying to the clipboard');
 			});
 	}
 }
