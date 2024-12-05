@@ -1,2 +1,1 @@
-web: npm compileLWC && npm serve
-
+web: npm run serve
