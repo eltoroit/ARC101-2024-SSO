@@ -32,10 +32,10 @@ export default class WebServer {
 		this.app.use(express.json());
 		this.app.use(cors(this._CORS()));
 		this.app.use(cookieParser());
-		this.createRoutes();
 
 		this.app.use(express.static(path.resolve(this.lwcFolder)));
 		this.app.use(express.static(path.resolve('./src')));
+		this.createRoutes();
 		this.util.logInfo({ message: `HTTPS web server fully configured (${this.lwcFolder})` });
 	}
 
@@ -111,7 +111,11 @@ export default class WebServer {
 	async getSettings(req, res) {
 		const userData = this.getUserDataFromCookie({ req, res, canBeEmpty: true });
 		let output = {};
-		if (userData) {
+		if (Object.keys(userData).length > 0) {
+			const protocol = req.protocol; // 'http' or 'https'
+			const host = req.get('host'); // e.g., 'example.com' or 'localhost:3000'
+			const callbackURL = `${protocol}://${host}/callback`;
+
 			output = {
 				UN: { label: 'Username', value: userData.UN.value },
 				PW: { label: 'Password', value: userData.PW.value },
@@ -120,7 +124,7 @@ export default class WebServer {
 				CONSUMER_SECRET: { label: 'Consumer Secret', value: userData.CONSUMER_SECRET.value },
 				MY_DOMAIN: { label: 'My Domain', value: userData.MY_DOMAIN.value },
 				// SECURITY_TOKEN: { label: "Security Token", value: userData.SECURITY_TOKEN.value },
-				CALLBACK: { label: 'Callback', value: userData.CALLBACK.value },
+				CALLBACK: { label: 'Callback', value: callbackURL },
 			};
 		}
 		res.status(200).json(output);

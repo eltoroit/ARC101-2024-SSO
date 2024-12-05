@@ -2,7 +2,17 @@ import { LightningElement, api } from 'lwc';
 
 export default class Home extends LightningElement {
 	_settings = {};
-	callbackURL = '';
+	_callbackURL = undefined;
+
+	get callbackURL() {
+		if (!this._callbackURL) {
+			this._callbackURL = `${window.location.origin}/callback`;
+		}
+		return this._callbackURL;
+	}
+	set callbackURL(value) {
+		this._callbackURL = value;
+	}
 
 	@api
 	get settings() {
@@ -15,15 +25,7 @@ export default class Home extends LightningElement {
 				// If we do not have valid values (Username) then read form cookie
 				this.readCookie();
 			}
-			this.callbackURL = this._settings.CALLBACK.value;
-		}
-	}
-
-	onCallbackUrlChange(event) {
-		if (this.callbackURL !== event.target.value) {
-			this.callbackURL = event.target.value;
-			this.settings.CALLBACK.value = this.callbackURL;
-			this.dispatchEvent(new CustomEvent('settingschange', { bubbles: true, composed: true, detail: this.settings }));
+			this._callbackURL = this._settings.CALLBACK.value;
 		}
 	}
 
