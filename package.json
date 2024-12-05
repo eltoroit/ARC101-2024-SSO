@@ -4,24 +4,23 @@
 		"compileLWC": "./build.sh",
 		"serve": "node ./src/server/index.js",
 		"watchLWC": "nodemon --watch src/clientLWC --ext js,html,css --exec './build.sh'",
-		"rebuildClient": "./fullRebuild.sh"
+		"rebuildClient": "./fullRebuild.sh",
+		"clean": "./clean.sh"
 	},
 	"dependencies": {
-		"@salesforce-ux/design-system": "^2.24.3",
 		"cookie-parser": "^1.4.7",
 		"cors": "2.8.5",
 		"dotenv": "16.4.5",
 		"ejs": "3.1.10",
 		"express": "^4.21.1",
-		"follow-redirects": "1.15.6"
+		"follow-redirects": "1.15.6",
+		"lightning-base-components": "^1.18.1-alpha"
 	},
 	"devDependencies": {
-		"@lwc/rollup-plugin": "^6.7.2",
-		"@rollup/plugin-replace": "^5.0.7",
-		"eslint": "^9.16.0",
-		"eslint-plugin-react": "^7.37.2",
-		"lightning-base-components": "1.22.3-alpha",
-		"lwc": "^6.7.2",
-		"rollup": "^4.18.0"
+		"@lwc/rollup-plugin": "^2.43.0",
+		"@rollup/plugin-replace": "^5.0.2",
+		"@salesforce-ux/design-system": "^2.20.1",
+		"lwc": "^2.43.0",
+		"rollup": "^3.20.3"
 	}
 }
