@@ -29,7 +29,6 @@ export default class UsernamePassword extends LightningElement {
 
 		fetch(`/proxy`, options)
 			.then((response) => {
-				debugger;
 				return response.text();
 			})
 			.then((txtData) => {
