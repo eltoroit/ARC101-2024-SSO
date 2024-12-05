@@ -15,7 +15,7 @@ export default class OAuthDemo {
 
 	async intializeServer() {
 		const util = new UTIL();
-		const oauthJWT = new OAUTH_JWT({ util });
+		new OAUTH_JWT({ util });
 		const webserver = new WEB_SERVER({ util });
 
 		await webserver.initialize({ isLocalhost: process.env.SERVER === 'Local', HTTPS_PORT });

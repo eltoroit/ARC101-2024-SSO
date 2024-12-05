@@ -4,9 +4,9 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Debug npm: [start]",
+			"name": "Debug npm: [Serve]",
 			"runtimeExecutable": "npm",
-			"runtimeArgs": ["run-script", "start"],
+			"runtimeArgs": ["run-script", "serve"],
 			"cwd": "${workspaceFolder}",
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen"
