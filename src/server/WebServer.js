@@ -40,11 +40,33 @@ export default class WebServer {
 	}
 
 	createRoutes() {
-		this.app.get('/home', this.renderLWC.bind(this));
 		this.app.get('/jwt', this.oauthJWT.bind(this));
+		this.app.get('/home', this.renderLWC.bind(this));
+		this.app.post('/proxy', this.proxy.bind(this));
 		this.app.post('/getUser', this.getUser.bind(this));
 		this.app.get('/callback', this.callback.bind(this));
 		this.app.get('/settings', this.getSettings.bind(this));
+	}
+
+	async proxy(req, res) {
+		const bodyProxy = req.body;
+
+		let request = {
+			method: bodyProxy.method,
+			url: bodyProxy.url,
+			postData: qs.stringify(bodyProxy.body),
+		};
+		if (bodyProxy.headers) {
+			request.headers = bodyProxy.headers;
+		}
+		this.util
+			.makeCallout(request)
+			.then((response) => {
+				res.send(response.body);
+			})
+			.catch((err) => {
+				res.status(500).send(err);
+			});
 	}
 
 	async renderLWC(req, res) {
@@ -58,14 +80,14 @@ export default class WebServer {
 		if (code) {
 			let request = {
 				method: `POST`,
-				url: `${process.env.OAUTH_LOGIN_URL}/services/oauth2/token`,
+				url: `${userData.LOGIN_URL.value}/services/oauth2/token`,
 				contentType: `FORM`,
 				postData: qs.stringify({
 					grant_type: `authorization_code`,
 					code,
-					client_id: process.env.OAUTH_CONSUMER_KEY,
-					client_secret: process.env.OAUTH_CONSUMER_SECRET,
-					redirect_uri: process.env.OAUTH_CALLBACK,
+					client_id: userData.CONSUMER_KEY.value,
+					client_secret: userData.CONSUMER_SECRET.value,
+					redirect_uri: userData.CALLBACK.value,
 				}),
 			};
 			this.util

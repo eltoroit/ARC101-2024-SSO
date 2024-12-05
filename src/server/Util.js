@@ -34,7 +34,7 @@ export default class Util {
 		return output;
 	}
 
-	makeCallout({ method, url, authorization, contentType, postData }) {
+	makeCallout({ method, url, authorization, contentType, headers, postData }) {
 		return new Promise((resolve, reject) => {
 			let urlParsed = new URL(url);
 			// Build request
@@ -53,6 +53,9 @@ export default class Util {
 			}
 			if (contentType) {
 				this._setHeaders(request, contentType);
+			}
+			if (headers) {
+				request.headers = { ...request.headers, ...headers };
 			}
 
 			// Make request

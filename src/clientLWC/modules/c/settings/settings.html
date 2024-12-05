@@ -1,14 +1,21 @@
 <template>
 	<div class="slds-align_absolute-center">
 		<div class="slds-form" style="width: 75%">
-			<table>
-				<template for:each={list} for:item="input">
-					<tr key={input.key}>
-						<th>{input.label}</th>
-						<td data-key={input.key} onclick={onClick}>{input.value}</td>
-					</tr>
-				</template>
-			</table>
+			<template lwc:if={hasSettings}>
+				<table>
+					<template for:each={list} for:item="input">
+						<tr key={input.key}>
+							<th>{input.label}</th>
+							<td data-key={input.key} onclick={onClick}>{input.value}</td>
+						</tr>
+					</template>
+				</table>
+			</template>
+			<template lwc:else>
+				<div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+					Please configure the options loading a Postman configration file
+				</div>
+			</template>
 			<slot name="additionalInput"></slot>
 			<br />
 			<div class="slds-align_absolute-center">

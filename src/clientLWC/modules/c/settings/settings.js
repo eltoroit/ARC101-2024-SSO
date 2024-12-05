@@ -14,6 +14,10 @@ export default class Settings extends LightningElement {
 		this.makeList();
 	}
 
+	get hasSettings() {
+		return this._settings && Object.keys(this.settings).length > 0;
+	}
+
 	@api
 	get keys() {
 		return this._keys;
@@ -39,16 +43,15 @@ export default class Settings extends LightningElement {
 	}
 
 	onClick(event) {
-		if (event.target.readOnly) {
-			let value = event.target.value;
-			navigator.clipboard
-				.writeText(value)
-				.then(() => {
-					alert(`Copied: ${value}`);
-				})
-				.catch((err) => {
-					alert('Error copying to the clipboard');
-				});
-		}
+		let key = event.target.attributes['data-key'].value;
+		let value = this.settings[key].value;
+		navigator.clipboard
+			.writeText(value)
+			.then(() => {
+				alert(`Copied: ${value}`);
+			})
+			.catch((err) => {
+				alert('Error copying to the clipboard');
+			});
 	}
 }
