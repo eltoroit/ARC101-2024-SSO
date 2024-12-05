@@ -28,7 +28,7 @@ export default class JWT extends LightningElement {
 		urlencoded.append('response_type', 'device_code');
 		urlencoded.append('client_id', this.settings.CONSUMER_KEY.value);
 
-		fetch(`${this.settings.LOGIN_URL.value}/services/oauth2/token`, {
+		fetch(`${this.settings.MY_DOMAIN.value}/services/oauth2/token`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -67,7 +67,7 @@ export default class JWT extends LightningElement {
 		urlencoded.append('code', deviceCode);
 
 		this.timer.last = new Date();
-		fetch(`${this.settings.LOGIN_URL.value}/services/oauth2/token`, {
+		fetch(`${this.settings.MY_DOMAIN.value}/services/oauth2/token`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',

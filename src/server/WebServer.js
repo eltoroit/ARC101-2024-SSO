@@ -105,7 +105,8 @@ export default class WebServer {
 	}
 
 	async oauthJWT(req, res) {
-		debugger;
+		const userData = this.getUserDataFromCookie({ req, res });
+
 		let privateKey = null;
 		if (this.config.isLocalhost) {
 			privateKey = fs.readFileSync(path.resolve('./cert', 'private.key')).toString('utf8');
@@ -114,9 +115,9 @@ export default class WebServer {
 		}
 		privateKey = privateKey.trim();
 		let data = await this.util.oauthJWT.authorize({
-			clientId: process.env.OAUTH_CONSUMER_KEY,
-			username: process.env.OAUTH_UN,
-			audience: process.env.OAUTH_AUDIENCE,
+			clientId: userData.CONSUMER_KEY.value,
+			username: userData.UN.value,
+			audience: userData.LOGIN_URL.value,
 			privateKey,
 		});
 		res.json(data);
