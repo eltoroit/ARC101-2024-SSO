@@ -136,9 +136,8 @@ export default class WebServer {
 		const userData = this.getUserDataFromCookie({ req, res, canBeEmpty: true });
 		let output = {};
 		if (Object.keys(userData).length > 0) {
-			const protocol = req.protocol; // 'http' or 'https'
 			const host = req.get('host'); // e.g., 'example.com' or 'localhost:3000'
-			const callbackURL = `${protocol}://${host}/callback`;
+			const callbackURL = `https://${host}/callback`;
 
 			output = {
 				UN: { label: 'Username', value: userData.UN.value },
