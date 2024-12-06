@@ -40,6 +40,7 @@ export default class WebServer {
 	}
 
 	createRoutes() {
+		this.app.get('/', this.renderLWC.bind(this));
 		this.app.get('/jwt', this.oauthJWT.bind(this));
 		this.app.get('/home', this.renderLWC.bind(this));
 		this.app.post('/proxy', this.proxy.bind(this));
@@ -208,6 +209,7 @@ export default class WebServer {
 				console.log(`✅ HTTPS web server initialized: https://localhost:${this.config.HTTPS_PORT}/`);
 			});
 		} else {
+			console.log(`Starting Heroku server on port: ${process.env.PORT}`);
 			this.app.listen(process.env.PORT, () => console.log(`✅   - Heroku server created`));
 		}
 	}

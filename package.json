@@ -2,10 +2,10 @@
 	"type": "module",
 	"scripts": {
 		"compileLWC": "./build.sh",
-		"start": "node ./src/server/index.js",
+		"serve": "node ./src/server/index.js",
 		"watchLWC": "nodemon --watch src/clientLWC --ext js,html,css --exec './build.sh'",
-		"rebuildClient": "./fullRebuild.sh",
-		"clean": "./clean.sh"
+		"clean": "./clean.sh",
+		"heroku-postbuild": "./fullRebuild.sh"
 	},
 	"dependencies": {
 		"cookie-parser": "^1.4.7",
