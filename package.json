@@ -5,7 +5,7 @@
 		"serve": "node ./src/server/index.js",
 		"watchLWC": "nodemon --watch src/clientLWC --ext js,html,css --exec './build.sh'",
 		"clean": "./clean.sh",
-		"postbuild": "./fullRebuild.sh"
+		"heroku-postbuild": "./fullRebuild.sh"
 	},
 	"dependencies": {
 		"cookie-parser": "^1.4.7",
