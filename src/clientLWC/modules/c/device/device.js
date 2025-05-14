@@ -138,7 +138,7 @@ export default class JWT extends LightningElement {
 		navigator.clipboard
 			.writeText(value)
 			.then(() => {
-				alert(`Copied: ${value}`);
+				// alert(`Copied: ${value}`);
 			})
 			.catch((err) => {
 				alert('Error copying to the clipboard');
