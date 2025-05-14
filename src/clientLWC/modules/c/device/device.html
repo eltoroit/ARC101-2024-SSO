@@ -4,30 +4,44 @@
 	</c-settings>
 	<template if:true={prompt}>
 		<div class="slds-align_absolute-center slds-text-heading_medium">
-			<table>
-				<tbody>
-					<tr>
-						<th>URL</th>
-						<td>
-							<a href={prompt.url} target="_blank">{prompt.url}</a><br />
-							<div data-qr="QRCode"></div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" class="slds-p-bottom_x-large"></td>
-					</tr>
-					<tr>
-						<th style="vertical-align: top">Code:</th>
-						<td><a href="#" onclick={onCodeClick}>{prompt.code}</a><br /><i>click code to copy it</i></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="slds-p-bottom_x-large"></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="slds-p-bottom_x-large">{timer.msg}</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="slds-grid slds-wrap">
+				<div class="slds-col slds-size_1-of-1">
+					<div class="slds-var-p-vertical_x-large">
+						<div data-qr="QRCode"></div>
+					</div>
+				</div>
+				<div class="slds-col slds-size_1-of-1">
+					<table>
+						<tbody>
+							<tr>
+								<td colspan="2" class="slds-var-p-bottom_x-large"></td>
+							</tr>
+							<tr>
+								<th style="vertical-align: top">URL:</th>
+								<td><a href={prompt.fullUrl} target="_blank" onclick={onURLClick}>{prompt.fullUrl}</a></td>
+							</tr>
+							<tr>
+								<th style="vertical-align: top">Code:</th>
+								<td><a href="#" onclick={onCodeClick}>{prompt.code}</a></td>
+							</tr>
+							<tr>
+								<th style="vertical-align: top">Username:</th>
+								<td><a href="#" onclick={onUNClick}>{settings.UN.value}</a></td>
+							</tr>
+							<tr>
+								<th style="vertical-align: top">Password:</th>
+								<td><a href="#" onclick={onPWClick}>{settings.PW.value}</a></td>
+							</tr>
+							<tr>
+								<td colspan="2" class="slds-var-p-bottom_x-large"></td>
+							</tr>
+							<tr>
+								<td colspan="2" class="slds-var-p-bottom_x-large">{timer.msg}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</template>
 </template>

@@ -22,7 +22,6 @@ export default class JWT extends LightningElement {
 	}
 
 	onLoginClick() {
-		debugger;
 		this.prompt = null;
 		let urlencoded = new URLSearchParams();
 		urlencoded.append('response_type', 'device_code');
@@ -45,13 +44,17 @@ export default class JWT extends LightningElement {
 						url: data.verification_uri,
 						code: data.user_code,
 					};
-					this.makeQRCode(data);
-					this.authWindow = window.open(data.verification_uri, '_blank', 'width=400,height=600');
+					this.prompt.fullUrl = `${data.verification_uri}?user_code=${data.user_code}`; // ?user_code=8DPHA7ZB&prompt=login
+					this.makeQRCode(this.prompt.fullUrl);
+					this.authWindow = window.open(this.prompt.fullUrl, '_blank', 'width=400,height=600');
 					clearInterval(this.timer.interval);
 					this.timer.last = new Date();
-					this.timer.interval = setInterval(() => {
-						this.checkAuthorization(data.device_code);
-					}, 2 * data.interval * 1000);
+					this.timer.interval = setInterval(
+						() => {
+							this.checkAuthorization(data.device_code);
+						},
+						2 * data.interval * 1000,
+					);
 				}
 			})
 			.catch((error) => {
@@ -95,12 +98,16 @@ export default class JWT extends LightningElement {
 			});
 	}
 
-	makeQRCode(data) {
+	makeQRCode(url) {
+		let div = this.template.querySelector(`div[data-qr="QRCode"]`);
+		if (div) {
+			div.innerHTML = '';
+		}
 		setTimeout(() => {
 			let _QRCode = QRCode; // eslint-disable-line
 			let div = this.template.querySelector(`div[data-qr="QRCode"]`);
 			let qrcode = new _QRCode(div, {
-				text: data.verification_uri,
+				text: url,
 				width: 300,
 				height: 300,
 				colorDark: '#000000',
@@ -110,8 +117,24 @@ export default class JWT extends LightningElement {
 		}, 0);
 	}
 
+	onURLClick() {
+		this._copyValue(this.prompt.fullUrl);
+	}
+
 	onCodeClick() {
-		let value = this.prompt.code;
+		this._copyValue(this.prompt.code);
+	}
+
+	onUNClick() {
+		this._copyValue(this.settings.UN.value);
+	}
+
+	onPWClick() {
+		this._copyValue(this.settings.PW.value);
+	}
+
+	_copyValue(value) {
+		this.makeQRCode(value);
 		navigator.clipboard
 			.writeText(value)
 			.then(() => {
